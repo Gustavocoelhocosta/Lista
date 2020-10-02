@@ -274,7 +274,7 @@ class Lista:
             for i in range(self.get_numero_de_elementos()-1):
                 print(self.get_cursor())
                 print(self.get_cursor().get_proximo())
-                if self.get_cursor().get_numero() > (self.get_cursor().get_proximo().get_numero():
+                if self.get_cursor().get_numero() > (self.get_cursor().get_proximo().get_numero()):
                     print('troca')
                     self.passar_atual_para_frente()
                     teste += 1
