@@ -115,7 +115,7 @@ class Lista:
             return True
 
     def posicao_de(self, chave):
-        self.buscar()
+        self.contem(chave)
         return self.get_posicao_cursor()
 
     def eh_elemento(self, elemento):
@@ -142,17 +142,20 @@ class Lista:
         self.ir_para_inicio()
 
     def inserir_vazio(self, elemento):
-        elemento.set_anterior(elemento)
-        elemento.set_proximo(elemento)
-        self.set_cursor(elemento)
-        self.set_posicao_cursor(0)
-        self.set_inicio(elemento)
-        self.set_numero_de_elementos(1)
+        if self.eh_elemento(elemento):
+            elemento.set_anterior(elemento)
+            elemento.set_proximo(elemento)
+            self.set_cursor(elemento)
+            self.set_posicao_cursor(0)
+            self.set_inicio(elemento)
+            self.set_numero_de_elementos(1)
+        else:
+            return print("Objeto não é da classe Elemento")
 
     def inserir_apos_atual(self, elemento):
         cursor = self.get_cursor()
         if not self.eh_elemento(elemento):
-            return ("Objeto não é da classe Elemento")
+            return print("Objeto não é da classe Elemento")
         if self.cheia():
             return print("Não foi possível inserir pois a lista esta cheia")
         if self.vazia():
@@ -206,12 +209,18 @@ class Lista:
 #Operações “sofisticadas”
 
     def inserir_na_frente(self, elemento):
-        self.ir_para_inicio()
-        self.inserir_antes_atual(elemento)
+        if self.vazia():
+            self.inserir_vazio(elemento)
+        else:
+            self.ir_para_inicio()
+            self.inserir_antes_atual(elemento)
 
     def inserir_no_final(self, elemento):
-        self.ir_para_fim()
-        self.inserir_apos_atual(elemento)
+        if self.vazia():
+            self.inserir_vazio(elemento)
+        else:
+            self.ir_para_fim()
+            self.inserir_apos_atual(elemento)
 
     def inserir_na_posicao(self, posicao, elemento):
         self.ir_para_inicio()
@@ -242,7 +251,8 @@ class Lista:
         b = self.get_cursor()
         c = self.get_cursor().get_proximo()
         d = self.get_cursor().get_proximo().get_proximo()
-
+        if b == self.get_inicio():
+            self.set_inicio(c)
         a.set_proximo(c)
 
         c.set_anterior(a)
@@ -255,24 +265,25 @@ class Lista:
 
 
 
+
     def ordenar(self):
         self.ir_para_inicio()
-        print(self.get_cursor().get_numero())
-        print('começo')
         teste = 0
         contador = 0
-        while contador != self.get_numero_de_elementos():
-            print(self.lista())
-            print(str(self.get_cursor().get_numero()) + ' e ' + str(self.get_cursor().get_proximo().get_numero()))
-            if self.get_cursor().get_numero() < self.get_cursor().get_proximo().get_numero():
-                self.passar_atual_para_frente()
-                self.avancar(1)
-                contador = 0
-                teste += 1
-            else:
-                contador += 1
-                self.avancar(1)
-        return print(self.lista())
+        while contador != (self.get_numero_de_elementos()-1):
+            for i in range(self.get_numero_de_elementos()-1):
+                print(self.get_cursor())
+                print(self.get_cursor().get_proximo())
+                if self.get_cursor().get_numero() > (self.get_cursor().get_proximo().get_numero():
+                    print('troca')
+                    self.passar_atual_para_frente()
+                    teste += 1
+                else:
+                    contador += 1
+                    self.avancar(1)
+                    print('avança')
+            self.ir_para_inicio()
+        return None
 
 
 
@@ -287,19 +298,16 @@ f = Elemento(6)
 
 
 l = Lista(8)
-l.inserir_na_frente(a)
-l.inserir_na_frente(b)
-l.inserir_na_frente(c)
+l.inserir_no_final(a)
+l.inserir_no_final(b)
+l.inserir_no_final(c)
 l.inserir_no_final(d)
-l.inserir_na_frente(e)
-l.inserir_na_posicao(2,f)
+l.inserir_no_final(e)
+l.inserir_no_final(f)
 print(l.lista())
 
 l.ir_para_inicio()
-print(l.get_cursor())
-print(l.get_cursor().get_proximo())
-l.passar_atual_para_frente()
 
-print(l.lista())
 
 l.ordenar()
+print(l.lista())
