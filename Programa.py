@@ -1,27 +1,59 @@
-import Elemento
-import Lista
+from Elemento import Elemento
+from Lista import Lista
 
 
-a = Elemento(4)
+a = Elemento(1)
 b = Elemento(2)
 c = Elemento(3)
-d = Elemento(1)
+d = Elemento(4)
 e = Elemento(5)
 f = Elemento(6)
 
 
 
-l = Lista(8)
-l.inserir_no_final(a)
-l.inserir_no_final(b)
-l.inserir_no_final(c)
-l.inserir_no_final(d)
-l.inserir_no_final(e)
-l.inserir_no_final(f)
+l = Lista(10)
+l.inserir_na_frente(a)
 print(l.lista())
 
-l.ir_para_inicio()
+l.inserir_na_frente(b)
+print(l.lista())
+
+l.inserir_no_final(c)
+print(l.lista())
 
 
-l.ordenar()
+l.inserir_apos_atual(d)
+print(l.lista())
+
+l.inserir_antes_atual(e)
+print(l.lista())
+
+l.inserir_na_posicao(1,f)
+print(l.lista())
+
+print(l.buscar(6))
+
+l.remover_elemento(4)
+print(l.lista())
+
+
+l.remover_da_posicao(10)
+print(l.lista())
+
+
+l.remover_ultimo()
+print(l.lista())
+
+
+l.remover_primeiro()
+print(l.lista())
+
+
+l.remove_atual()
+print(l.lista())
+
+
+
+l.remove_atual()
+
 print(l.lista())

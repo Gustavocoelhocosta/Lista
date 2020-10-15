@@ -1,4 +1,4 @@
-import Elemento from Elemento
+from Elemento import Elemento
 
 class Lista:
     def __init__(self, limite):
@@ -8,257 +8,252 @@ class Lista:
         self.__cursor = None
         self.__posicao_cursor = None
 
-    def get_inicio(self):
+    def _get_inicio(self):
         return self.__inicio
 
-    def get_fim(self):
-        return self.get_inicio().get_anterior()
+    def _get_fim(self):
+        return self._get_inicio()._get_anterior()
 
-    def get_cursor(self):
+    def _get_cursor(self) -> object:
         return self.__cursor
 
-    def get_posicao_cursor(self):
+    def _get_posicao_cursor(self):
         return self.__posicao_cursor
 
-    def get_numero_de_elementos(self):
+    def _get_numero_de_elementos(self):
         return self.__numero_de_elementos
 
-    def get_limite(self):
+    def _get_limite(self):
         return self.__limite
 
-    def set_inicio(self, elemento):
+    def _set_inicio(self, elemento):
         self.__inicio = elemento
 
-    def set_fim(self, elemento):
+    def _set_fim(self, elemento):
         self.__fim = elemento
 
-    def set_cursor(self, elemento):
+    def _set_cursor(self, elemento):
         self.__cursor = elemento
 
-    def set_posicao_cursor(self, posicao):
+    def _set_posicao_cursor(self, posicao):
         self.__posicao_cursor = posicao
 
-    def set_numero_de_elementos(self, numero):
+    def _set_numero_de_elementos(self, numero):
         self.__numero_de_elementos = numero
 
-    def set_limite(self, limite):
+    def _set_limite(self, limite):
         self.__limite = limite
 
 # Operações Básicas Atômicas
 
-    def ir_para_inicio(self):
-        self.set_cursor(self.get_inicio())
-        self.set_posicao_cursor(0)
+    def _ir_para_inicio(self):
+        self._set_cursor(self._get_inicio())
+        self._set_posicao_cursor(0)
 
-    def ir_para_fim(self):
-        self.ir_para_inicio()
-        self.retroceder(1)
-        self.set_posicao_cursor(self.get_numero_de_elementos()-1)
 
-    def avancar(self, posicoes):
+    def _ir_para_fim(self):
+        self._ir_para_inicio()
+        self._retroceder(1)
+        self._set_posicao_cursor(self._get_numero_de_elementos()-1)
+
+
+    def _avancar(self, posicoes):
         contador = 0
         while contador < posicoes:
-            self.set_cursor(self.get_cursor().get_proximo())
+            self._set_cursor(self._get_cursor()._get_proximo())
             contador += 1
-            self.set_posicao_cursor((self.get_posicao_cursor()+1)&(self.get_numero_de_elementos()-1))
+            self._set_posicao_cursor((self._get_posicao_cursor()+1)&(self._get_numero_de_elementos()-1))
 
-    def retroceder(self, posicoes):
+
+
+    def _retroceder(self, posicoes):
         contador = 0
         while contador < posicoes:
-            self.set_cursor(self.get_cursor().get_anterior())
+            self._set_cursor(self._get_cursor()._get_anterior())
             contador += 1
-            self.set_posicao_cursor((self.get_posicao_cursor()-1)&(self.get_numero_de_elementos()-1))
+            self._set_posicao_cursor((self._get_posicao_cursor()-1)&(self._get_numero_de_elementos()-1))
 
 # consultas
 
-    def vazia(self):
+    def _vazia(self):
         return self.__numero_de_elementos == 0
 
-    def cheia(self):
-        return self.__numero_de_elementos == self.get_limite()
+    def _cheia(self):
+        return self.__numero_de_elementos == self._get_limite()
 
-    def contem(self, chave):
-        if self.vazia():
+    def _contem(self, chave):
+        if self._vazia():
             return False
         else:
-            self.ir_para_inicio()
+            self._ir_para_inicio()
             contador = 0
-            while self.get_cursor().get_numero() != chave:
-                if contador == self.get_numero_de_elementos() - 1:
-                    self.ir_para_inicio()
+            while self._get_cursor()._get_numero() != chave:
+                if contador == self._get_numero_de_elementos() - 1:
+                    self._ir_para_inicio()
                     return False
-                self.avancar(1)
+                self._avancar(1)
                 contador += 1
             return True
 
-    def posicao_de(self, chave):
-        self.contem(chave)
-        return self.get_posicao_cursor()
+    def _posicao_de(self, chave):
+        if self._contem(chave):
+            return self._get_posicao_cursor()
+        else:
+            raise Exception('elemento não foi encontrado na lista')
 
-    def eh_elemento(self, elemento):
+    def _eh_elemento(self, elemento):
         return isinstance(elemento, Elemento)
+
+    def _eh_inteiro(self, numero):
+        return isinstance(numero, int)
+
 
 #estrutura#
 
     def acessar_atual(self):
-        return get_cursor()
+        if self._vazia():
+            raise Exception('Não foi possivel acessár o cursor pois a lista está vazia')
+        else:
+            return self._get_cursor()
 
     def remove_atual(self):
-        cursor = self.get_cursor()
-        proximo = cursor.get_proximo()
-        anterior = cursor.get_anterior()
-
-        if cursor == self.get_inicio():
-            self.set_inicio(proximo)
-        if cursor == self.get_fim():
-            self.set_fim(anterior)
-
-        cursor.get_anterior().set_proximo(proximo)
-        cursor.get_proximo().set_anterior(anterior)
-        self.set_numero_de_elementos(self.get_numero_de_elementos() - 1)
-        self.ir_para_inicio()
-
-    def inserir_vazio(self, elemento):
-        if self.eh_elemento(elemento):
-            elemento.set_anterior(elemento)
-            elemento.set_proximo(elemento)
-            self.set_cursor(elemento)
-            self.set_posicao_cursor(0)
-            self.set_inicio(elemento)
-            self.set_numero_de_elementos(1)
+        if self._vazia():
+            raise Exception('Não foi possivel exluir o cursor pois a lista está vazia')
+        elif self._get_numero_de_elementos() == 1:
+            self._set_numero_de_elementos(0)
+            self._set_inicio(None)
+            self._set_fim(None)
+            self._set_cursor(None)
+            self._set_posicao_cursor(None)
         else:
-            return print("Objeto não é da classe Elemento")
+            cursor = self._get_cursor()
+            proximo = cursor._get_proximo()
+            anterior = cursor._get_anterior()
+
+            if cursor == self._get_inicio():
+                self._set_inicio(proximo)
+            if cursor == self._get_fim():
+                self._set_fim(anterior)
+
+            cursor._get_anterior()._set_proximo(proximo)
+            cursor._get_proximo()._set_anterior(anterior)
+            self._set_numero_de_elementos(self._get_numero_de_elementos() - 1)
+            self._ir_para_inicio()
+
+    def _inserir_vazio(self, elemento):
+        if self._eh_elemento(elemento):
+            elemento._set_anterior(elemento)
+            elemento._set_proximo(elemento)
+            self._set_cursor(elemento)
+            self._set_posicao_cursor(0)
+            self._set_inicio(elemento)
+            self._set_numero_de_elementos(1)
+        else:
+            raise Exception("Parâmetro não é da classe Elemento")
 
     def inserir_apos_atual(self, elemento):
-        cursor = self.get_cursor()
-        if not self.eh_elemento(elemento):
-            return print("Objeto não é da classe Elemento")
-        if self.cheia():
-            return print("Não foi possível inserir pois a lista esta cheia")
-        if self.vazia():
-            self.inserir_vazio(elemento)
+        cursor = self._get_cursor()
+        if not self._eh_elemento(elemento):
+            raise Exception("Parâmetro não é da classe Elemento")
+        if self._cheia():
+            raise Exception("Não foi possível inserir pois a lista esta cheia")
+        if self._vazia():
+            self._inserir_vazio(elemento)
             return None
-        if cursor == self.get_fim():
-            self.set_fim(elemento)
-        elemento.set_anterior(cursor)
-        elemento.set_proximo(cursor.get_proximo())
-        cursor.get_proximo().set_anterior(elemento)
-        cursor.set_proximo(elemento)
-        self.set_numero_de_elementos( self.get_numero_de_elementos() + 1)
+        if cursor == self._get_fim():
+            self._set_fim(elemento)
+        elemento._set_anterior(cursor)
+        elemento._set_proximo(cursor._get_proximo())
+        cursor._get_proximo()._set_anterior(elemento)
+        cursor._set_proximo(elemento)
+        self._set_numero_de_elementos( self._get_numero_de_elementos() + 1)
         return None
 
     def inserir_antes_atual(self, elemento):
-        cursor = self.get_cursor()
-        if not self.eh_elemento(elemento):
-            return ("Objeto não é da classe Elemento")
-        if self.cheia():
-            return print("Não foi possível inserir pois a lista esta cheia")
-        if self.vazia():
-            self.inserir_vazio(elemento)
+        cursor = self._get_cursor()
+        if not self._eh_elemento(elemento):
+            raise Exception("Parâmetro não é da classe Elemento")
+        if self._cheia():
+            raise Exception("Não foi possível inserir pois a lista esta cheia")
+        if self._vazia():
+            self._inserir_vazio(elemento)
             return None
-        if cursor == self.get_inicio():
-            self.set_inicio(elemento)
-        elemento.set_proximo(cursor)
-        elemento.set_anterior(cursor.get_anterior())
-        cursor.get_anterior().set_proximo(elemento)
-        cursor.set_anterior(elemento)
-        self.set_numero_de_elementos(self.get_numero_de_elementos() + 1)
+        if cursor == self._get_inicio():
+            self._set_inicio(elemento)
+        elemento._set_proximo(cursor)
+        elemento._set_anterior(cursor._get_anterior())
+        cursor._get_anterior()._set_proximo(elemento)
+        cursor._set_anterior(elemento)
+        self._set_numero_de_elementos(self._get_numero_de_elementos() + 1)
         return None
 
     def buscar(self, chave):
-        if self.contem(chave):
-            return self.get_cursor()
+        if self._contem(chave):
+            return self._get_cursor()
         else:
-            print("elemento não encontrado")
-            return None
+            raise Exception("elemento não encontrado")
 
     def lista(self):
-        contador = 1
-        self.ir_para_inicio()
-        lista = str(self.get_cursor())
-        while contador < self.get_numero_de_elementos():
-            self.avancar(1)
-            lista = lista + "," + str(self.get_cursor())
-            contador += 1
-        return lista
+        if not self._vazia():
+            contador = 1
+            self._ir_para_inicio()
+            lista = str(self._get_cursor())
+            while contador < self._get_numero_de_elementos():
+                self._avancar(1)
+                lista = lista + "," + str(self._get_cursor())
+                contador += 1
+            return lista
+
+        else:
+            raise Exception('não foi possivel imprimir a lista pois ela está vazia')
 
 
 #Operações “sofisticadas”
 
     def inserir_na_frente(self, elemento):
-        if self.vazia():
-            self.inserir_vazio(elemento)
+        if self._vazia():
+            self._inserir_vazio(elemento)
         else:
-            self.ir_para_inicio()
+            self._ir_para_inicio()
             self.inserir_antes_atual(elemento)
 
     def inserir_no_final(self, elemento):
-        if self.vazia():
-            self.inserir_vazio(elemento)
+        if self._vazia():
+            self._inserir_vazio(elemento)
         else:
-            self.ir_para_fim()
+            self._ir_para_fim()
             self.inserir_apos_atual(elemento)
 
     def inserir_na_posicao(self, posicao, elemento):
-        self.ir_para_inicio()
-        self.avancar(posicao-1)
-        self.inserir_apos_atual(elemento)
+        if self._eh_inteiro(posicao):
+            if posicao < (self._get_numero_de_elementos()-1):
+                self._ir_para_inicio()
+                self._avancar(posicao-1)
+                self.inserir_apos_atual(elemento)
+            else:
+                raise Exception('Posição informada não existe na lista')
+        else:
+            raise Exception('Parâmetro posição não é um inteiro')
 
     def remover_da_posicao(self, posicao):
-        self.ir_para_inicio()
-        self.avancar(posicao)
-        self.remove_atual()
+        if isinstance(posicao, int):
+            if posicao < (self._get_numero_de_elementos()-1):
+                self._ir_para_inicio()
+                self._avancar(posicao)
+                self.remove_atual()
+            else:
+                raise Exception('Posição informada não existe na lista')
+        else:
+            raise Exception('Parâmetro posição não é um inteiro')
 
     def remover_primeiro(self):
-        self.ir_para_inicio()
+        self._ir_para_inicio()
         self.remove_atual()
 
     def remover_ultimo(self):
-        self.ir_para_fim()
+        self._ir_para_fim()
         self.remove_atual()
 
     def remover_elemento(self, chave):
         self.buscar(chave)
         self.remove_atual()
-
-# teste ordenação:
-
-    def passar_atual_para_frente(self):
-        a = self.get_cursor().get_anterior()
-        b = self.get_cursor()
-        c = self.get_cursor().get_proximo()
-        d = self.get_cursor().get_proximo().get_proximo()
-        if b == self.get_inicio():
-            self.set_inicio(c)
-        a.set_proximo(c)
-
-        c.set_anterior(a)
-        c.set_proximo(b)
-
-        b.set_anterior(c)
-        b.set_proximo(d)
-
-        d.set_anterior(b)
-
-
-
-
-    def ordenar(self):
-        self.ir_para_inicio()
-        avançou = 0
-        while avançou <= (self.get_numero_de_elementos()-1):
-            avancou = 0
-            self.ir_para_inicio()
-            for i in range(self.get_numero_de_elementos()-1):
-                
-                print(self.get_cursor())
-                print(self.get_cursor().get_proximo())
-                if self.get_cursor().get_numero() > (self.get_cursor().get_proximo().get_numero()):
-                    print('troca')
-                    self.passar_atual_para_frente()
-                else:
-                    avancou += 1
-                    self.avancar(1)
-                    print('avança')
-
-        return None

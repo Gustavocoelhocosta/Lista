@@ -7,17 +7,23 @@ class Elemento:
     def __str__(self):
         return str(self.__num)
 
-    def get_numero(self):
+    def _get_numero(self):
         return self.__num
 
-    def get_anterior(self):
+    def _get_anterior(self):
         return self.__anterior
 
-    def set_anterior(self, elemento):
-        self.__anterior = elemento
+    def _set_anterior(self, elemento):
+        if isinstance(elemento, Elemento):
+            self.__anterior = elemento
+        else:
+            raise Exception('O parâmetro não é da classe Elemento!')
 
-    def get_proximo(self):
+    def _get_proximo(self):
         return self.__proximo
 
-    def set_proximo(self, elemento):
-        self.__proximo = elemento
+    def _set_proximo(self, elemento):
+        if isinstance(elemento, Elemento):
+            self.__proximo = elemento
+        else:
+            raise Exception('O parâmetro não é da classe Elemento!')
