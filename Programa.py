@@ -31,13 +31,13 @@ print(l.lista())
 l.inserir_na_posicao(1,f)
 print(l.lista())
 
-print(l.buscar(6))
+print(l._contem(5))
 
 l.remover_elemento(4)
 print(l.lista())
 
 
-l.remover_da_posicao(10)
+l.remover_da_posicao(2)
 print(l.lista())
 
 
@@ -52,8 +52,3 @@ print(l.lista())
 l.remove_atual()
 print(l.lista())
 
-
-
-l.remove_atual()
-
-print(l.lista())

@@ -82,18 +82,10 @@ class Lista:
         return self.__numero_de_elementos == self._get_limite()
 
     def _contem(self, chave):
-        if self._vazia():
-            return False
-        else:
-            self._ir_para_inicio()
-            contador = 0
-            while self._get_cursor()._get_numero() != chave:
-                if contador == self._get_numero_de_elementos() - 1:
-                    self._ir_para_inicio()
-                    return False
-                self._avancar(1)
-                contador += 1
+        if self.buscar(chave):
             return True
+        else:
+            return False
 
     def _posicao_de(self, chave):
         if self._contem(chave):
@@ -188,10 +180,23 @@ class Lista:
         return None
 
     def buscar(self, chave):
-        if self._contem(chave):
-            return self._get_cursor()
+        if self._vazia():
+            return False
         else:
-            raise Exception("elemento não encontrado")
+            fake = Elemento(chave)
+            self.inserir_no_final(fake)
+            self._ir_para_inicio()
+            contador = 0
+            while self._get_cursor()._get_numero() != chave:
+                self._avancar(1)
+            if self._get_cursor() == fake:
+                self.remover_ultimo()
+                return False
+            else:
+                self.remover_ultimo()
+                self._ir_para_inicio()
+                return True
+
 
     def lista(self):
         if not self._vazia():

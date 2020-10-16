@@ -1,126 +1,105 @@
 Implementação de Lista duplamente encadeada
 
 
+Criação de uma classe chamada Lista que armazena exclusivamente objetos da classe Elemento.
+A lista é cíclica por isso o próximo elemento depopis do último é o primeiro elemento.
 
-from Elemento import Elemento
+A classe Elemento possui os seguintes atributos:
 
-class Lista:
-    def __init__(self, limite):
-        self.__limite = limite
-        self.__numero_de_elementos = 0
-        self.__inicio = None
-        self.__cursor = None
-        self.__posicao_cursor = None
+num --> número do elemento em si
+anterior --> elemento anterior ao elemento em si
+proximo --> elemento posterior ao elemento em si
 
-    def _get_inicio(self):
-        return self.__inicio
+geters de todos os atributos são privados.
+get_numero --> retorna o número do elemento em si
+get_anterior --> retorna o elemento anterior ao número
+get_proximo --> retorna o elemento posterior ao número
 
-    def _get_fim(self):
-        return self._get_inicio()._get_anterior()
 
-    def _get_cursor(self) -> object:
-        return self.__cursor
+setters de todos os atributos são privados.
+set_numero --> altera o número do elemento em si
+set_anterior --> altera o elemento anterior ao número. verifica se o elemento alterado é da classe Elemento, se não levanta exceção.
+set_proximo --> altera a elemento posterior ao número. verifica se o elemento alterado é da classe Elemento, se não levanta exceção.
 
-    def _get_posicao_cursor(self):
-        return self.__posicao_cursor
 
-    def _get_numero_de_elementos(self):
-        return self.__numero_de_elementos
+Para a Lista ser instanciada é necessário fornecer o numero de elementos máximo que a lista pode conter e a lista começa vazia.
 
-    def _get_limite(self):
-        return self.__limite
+A classe lista contem os seguintes atributos:
+- limite --> o número máximo de elementos que uma lista pode conter.
+- número de elementos --> o número de elementos que contem na lista. inicia em 0
+- inicio --> o primeiro elemento da lista. inicia em None
+- cursor --> um indicador que pode apontar para qualquer um dos elementos da lista. inicia em None
+- posição do cursor --> a posição do cursor em relação ao pimeiro elemento ( o primeiro elemento tem posição igual a 0)] inicia em None
 
-    def _set_inicio(self, elemento):
-        self.__inicio = elemento
 
-    def _set_fim(self, elemento):
-        self.__fim = elemento
+geters de todos os atrbutos são privados.
 
-    def _set_cursor(self, elemento):
-        self.__cursor = elemento
+_get_inicio -->  retorna o primeiro elemento da lista
+_get_fim --> retorna o úntimo elemento da lista
+_get_cursor --> retorna o elemento que o cursor está apontado.
+_get_posicao_cursor --> retorna a posição do elemento que o cursor está apontato
+_get_numero_de_elementos --> retorna o numero total de elemntos da lista.
+_get_limite --> retorna o numero maximo de elementos da lista.
 
-    def _set_posicao_cursor(self, posicao):
-        self.__posicao_cursor = posicao
 
-    def _set_numero_de_elementos(self, numero):
-        self.__numero_de_elementos = numero
+setters de todos os atrbutos são privados.
 
-    def _set_limite(self, limite):
-        self.__limite = limite
+_set_inicio -->  altera o primeiro elemento da lista
+_set_fim --> altera o úntimo elemento da lista
+_set_cursor --> altera o elemento que o cursor está apontado.
+_set_posicao_cursor --> altera a posição do elemento que o cursor está apontato
+_set_numero_de_elementos --> altera o numero total de elemntos da lista.
+_set_limite --> altera o numero maximo de elementos da lista.
+
+
 
 # Operações Básicas Atômicas
 
-    def _ir_para_inicio(self):
-        self._set_cursor(self._get_inicio())
-        self._set_posicao_cursor(0)
+ir_para_inicio
+Aponta o cursor para o primeiro elemento da lista.
 
+_ir_para_fim
+Aponta o cursor para o último elemento da lista.
 
-    def _ir_para_fim(self):
-        self._ir_para_inicio()
-        self._retroceder(1)
-        self._set_posicao_cursor(self._get_numero_de_elementos()-1)
+_avancar
+avança o cursos pela lista.
+pede o numero de avanços a serem realizados.
+seta o cursor pelo próximo elemento dele mesmo um numero definido de vezes.
 
-
-    def _avancar(self, posicoes):
-        contador = 0
-        while contador < posicoes:
-            self._set_cursor(self._get_cursor()._get_proximo())
-            contador += 1
-            self._set_posicao_cursor((self._get_posicao_cursor()+1)&(self._get_numero_de_elementos()-1))
-
-
-
-    def _retroceder(self, posicoes):
-        contador = 0
-        while contador < posicoes:
-            self._set_cursor(self._get_cursor()._get_anterior())
-            contador += 1
-            self._set_posicao_cursor((self._get_posicao_cursor()-1)&(self._get_numero_de_elementos()-1))
+_retroceder
+retrocede o cursos pela lista.
+pede o numero de retrocessos a serem realizados.
+seta o cursor pelo elemento anterior a ele mesmo um numero definido de vezes.
 
 # consultas
 
 vazia
-Verifica se a lista está vazia retorna Verdadeiro ou Falso
+Verifica se a lista está vazia a partir do atributo número de elemntos.
+
+retorna Verdadeiro ou Falso
 
 cheia
-Verifica se a lista está cheia retorna Verdadeiro ou Falso
+Verifica se a lista está cheia comparando o número de elementos com o limite.
+retorna Verdadeiro ou Falso
 
 contem
-Verifica se um elemento está contido na lista a partir de uma chave através de busca linear, retorna verdadeiro ou falso.
-caso a lista esteja vazia retorna falso
-Aponta o cursor para o início da lista
-compara a chave do cursor com a chave do parâmetro se for a mesma retorna verdadeiro.
-Se for falso aponta o cursos para o próximo elemento da lista e faz nova comparação de chaves até encontrar o elemento retornando Verdadeiro ou chegar ao final da lista sem encontrar retornando falso.
-No caso do elemento for encorntrado, Retorna falso e o cursosr permanece apontado para o elemento encontrado
-Com um contador verifica se a busca foi feita até o final da lista.
-
+Verifica se um elemento está na lista a partir da chave.
+invoca o método "busca" e caso encontre o elemento retorna Verdadeiro se não encontrar retorna Falso.
 
 posicao_de
 Retorna a posição de um elemento a partir de uma chave
-invoca método "contem"
-se não encontrar
-        self._contem(chave)
-        return self._get_posicao_cursor()
-
-    def _eh_elemento(self, elemento):
-        return isinstance(elemento, Elemento)
-
-    def _eh_inteiro(self, numero):
-        return isinstance(numero, int)
+invoca método "busca" caso ache o elemento retorna sua posição.
+caso não encontre levanta exceção
 
 
 #estrutura#
-
 acessar_atual
 retorna o elemento apontado pelo cursor
 caso a lista estiver vasia levanta uma exceção
 
-
-remove_atual
-Exclui elemento que está apontado pelo cursor da lista.
-Aponta o cursor para o primeiro elemento restante da lista.
-No caso da lista conter apenas um elemento seta a alista numa lista vazia.
-No caso da lista estar vazia, levanta uma exceção.
+listar
+retorna um string contendo os valores de todos elementos da lista, ordenadamente, a partir do início até o fim e separados por vírgula.
+caso a lista esteja vazia levanta exceção
 
 inserir_vazio
 Inseri o primeiro elemento da lista
@@ -133,8 +112,6 @@ se o cursor estiver apontando para o útimo elemento, o elemento inserido se tor
 Se o parametro não for da classe Elemento levanta uma exceção.
 Se a lista estiver cheia levanta uma exceção.
 
-
-
 inserir_antes_atual
 Inseri um elemento antes o elemento que o cursor estiver apontando.
 se a lista estiver vazia invoca o método "inserir_vazio"
@@ -143,57 +120,59 @@ Se o parametro não for da classe Elemento levanta uma exceção.
 Se a lista estiver cheia levanta uma exceção.
 
 buscar
-Busca um elemento a partir da chave, aponta o cursor para o elemento caso encontre, e retorna o cursor.
-caso não encontre o elemento levanta exceção
-
-
-listar
-retorna um string contendo os valores de todos elementos da lista, ordenadamente, a partir do início até o fim e separados por vírgula.
-caso a lista esteja vazia levanta exceção
-
-
+Busca elemento  na lista a partir de uma chave através de busca linear, retorna verdadeiro ou falso.
+caso a lista esteja vazia retorna falso
+inseri um elemento falso ao fim da lista com a mesma chave a ser procurada.
+Aponta o cursor para o início da lista, e percorre a mesma apontando o cursor e comparando a chave do elemento procurado com a chave do cursor.
+Ao encontar verifica se o elemento encontrado não é o fake inserido no final da lista, se não for retorna verdadeiro, se for retorna falso.
 
 
 #Operações “sofisticadas”
 
-    def inserir_na_frente(self, elemento):
-        if self._vazia():
-            self._inserir_vazio(elemento)
-        else:
-            self._ir_para_inicio()
-            self.inserir_antes_atual(elemento)
+inserir_na_frente
+Inseri um elemento no início da lista.
+Aponta o cursor para o início e invoca o metódo "inserir_antes_atual"
 
-    def inserir_no_final(self, elemento):
-        if self._vazia():
-            self._inserir_vazio(elemento)
-        else:
-            self._ir_para_fim()
-            self.inserir_apos_atual(elemento)
 
-    def inserir_na_posicao(self, posicao, elemento):
-        if self._eh_inteiro(posicao):
-            if posicao < (self._get_numero_de_elementos()-1):
-                self._ir_para_inicio()
-                self._avancar(posicao-1)
-                self.inserir_apos_atual(elemento)
-            else:
-                raise Exception('Posição informada não existe na lista')
-        else:
-            raise Exception('Parâmetro posição não é um inteiro')
+inserir_no_final
+Inseri um elemento no final da lista.
+Aponta o cursor para o elemnto final da lista e invoca o metódo "inserir_apos_atual"
 
-    def remover_da_posicao(self, posicao):
-        self._ir_para_inicio()
-        self._avancar(posicao)
-        self.remove_atual()
 
-    def remover_primeiro(self):
-        self._ir_para_inicio()
-        self.remove_atual()
+inserir_na_posicao
+Inseri um elemento na posição informada através de um inteiro.
+verifica se a posição informada é um inteiro, se não for levanta exceção
+verifica se a posição informada existe na lista, se não existir levanta exceção
+aponta o cursor para o início, avança o numero de posições solicitadas menos um e invoca o método "inserir_apos_atual"
 
-    def remover_ultimo(self):
-        self._ir_para_fim()
-        self.remove_atual()
 
-    def remover_elemento(self, chave):
-        self.buscar(chave)
-        self.remove_atual()
+remove_atual
+Exclui elemento que está apontado pelo cursor da lista.
+Se o cursor estiver apontando para o início da lista seta o início para o elemento posterior ao cursor.
+Se o cursor estiver apontando para o fim da lista seta o fim para o elemento anterior ao cursor.
+Após a exclusão aponta o cursor para o primeiro elemento restante da lista.
+No caso da lista conter apenas um elemento seta a alista numa lista vazia.
+No caso da lista estar vazia, levanta uma exceção.
+
+remover_primeiro
+remove o primeiro elemento da lista
+invoca o metodo "ir_para_inicio"
+invoca o método "remove_atual"
+
+remover_ultimo
+Remove o último elemento da lista
+invoca o metodo "ir_para_fim"
+invoca o método "remove_atual"
+
+remover_elemento
+remove um elemento a partir de uma chave
+Invoca o método "buscar" pela chave
+invoca o método "remove_atual"
+
+remover_da_posicao
+Remove o epemento na posição solicitada.
+verifica se a posição informada é um inteiro, se não for levanta exceção
+verifica se a posição informada existe na lista, se não existir levanta exceção
+invoca o metodo "ir_para_inicio"
+invoca o método "avançar" o número de posições solicitadas menos um.
+invoca o método invoca o método "remove_atual"
